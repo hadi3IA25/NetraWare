@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0f766e">
+  <title>Dashboard | NetraWare</title>
+  <script>try{const t=localStorage.getItem('netraware-theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme: dark)').matches))document.documentElement.classList.add('dark')}catch(e){}</script>
+  <link rel="stylesheet" href="/assets/css/styles.css?v=5.4.0">
+</head>
+<body class="app-body">
+  <aside class="side-nav" aria-label="Navigasi dashboard">
+    <a class="brand side-brand" href="/"><span class="brand-symbol">◉</span><span><strong>NetraWare</strong><small>Jaga Netra</small></span></a>
+    <nav>
+      <a class="active" data-nav-target href="#overview"><span>⌂</span>Ringkasan</a>
+      <a data-nav-target href="#camera"><span>◉</span>Kamera</a>
+      <a data-nav-target href="#logs"><span>≡</span>Log data</a>
+      <a data-nav-target href="#reports"><span>⇩</span>Laporan</a>
+    </nav>
+    <section class="audio-settings side-audio-settings" aria-labelledby="audioSettingsTitle">
+      <div class="audio-settings-header">
+        <div><span class="eyebrow">Peringatan</span><h3 id="audioSettingsTitle">Notifikasi audio</h3></div>
+        <label class="switch-control" for="audioEnabled">
+          <input id="audioEnabled" type="checkbox" role="switch" checked>
+          <span class="switch-track" aria-hidden="true"></span>
+          <span id="audioEnabledLabel">Aktif</span>
+        </label>
+      </div>
+      <label class="volume-control" for="audioVolume">
+        <span>Volume</span>
+        <input id="audioVolume" type="range" min="0" max="100" step="1" value="70">
+        <output id="audioVolumeValue" for="audioVolume">70%</output>
+      </label>
+      <button id="testAudioButton" class="button secondary audio-test-button" type="button">Uji suara</button>
+      <small>Nada berbunyi saat status mencapai “Perlu istirahat”.</small>
+    </section>
+    <div class="side-footer"><span>Metode penelitian</span></div>
+  </aside>
+
+  <div class="app-content">
+    <header class="app-header">
+      <div><span class="eyebrow">Dashboard monitoring</span><h1>Sesi NetraWare</h1></div>
+      <div class="header-actions">
+        <span id="connectionStatus" class="status-chip neutral">Kamera nonaktif</span>
+        <button class="icon-button" type="button" data-theme-toggle><span data-theme-icon>☾</span></button>
+      </div>
+    </header>
+
+    <main>
+      <section id="overview" class="session-strip">
+        <div><span>Kode responden</span><strong id="userCodeLabel">-</strong></div>
+        <div><span>Kode sesi</span><strong id="sessionCodeLabel">-</strong></div>
+        <div><span>Metode</span><strong>EAR + PERCLOS</strong></div>
+      </section>
+
+      <section id="alertBanner" class="alert-box hidden" role="alert">
+        <div><strong>Peringatan istirahat</strong><p id="alertMessage">Sistem menyarankan istirahat.</p></div>
+        <button id="alertRestButton" class="button secondary" type="button">Sudah istirahat</button>
+      </section>
+
+      <section id="sessionFinishedCard" class="finished-box hidden">
+        <div><strong>Sesi telah selesai</strong><p>Laporan sesi tetap dapat diunduh dari panel laporan.</p></div>
+        <button id="startAgainButton" class="button primary" type="button">Mulai sesi baru</button>
+      </section>
+
+      <p id="dashboardMessage" class="inline-message" aria-live="polite"></p>
+
+      <section class="dashboard-grid">
+        <article id="camera" class="panel camera-panel">
+          <div class="panel-header"><div><span class="eyebrow">Live camera</span><h2>Kamera monitoring</h2><p id="phaseLabel">Aktifkan kamera untuk memulai kalibrasi.</p></div></div>
+          <div class="video-frame">
+            <video id="videoElement" autoplay muted playsinline></video>
+            <canvas id="eyeOverlayCanvas"></canvas>
+            <canvas id="captureCanvas" class="hidden"></canvas>
+            <div id="cameraPlaceholder" class="camera-placeholder"><span class="camera-glyph">◎</span><strong>Kamera belum aktif</strong><small>Tekan “Mulai kamera” dan berikan izin akses.</small></div>
+          </div>
+          <div class="calibration-row"><div><span>Kalibrasi personal</span><strong id="calibrationPercent">0%</strong></div><div class="progress-track"><span id="calibrationProgress"></span></div></div>
+          <div class="action-row">
+            <button id="cameraButton" class="button primary" type="button">Mulai kamera</button>
+            <button id="stopCameraButton" class="button secondary" type="button" disabled>Hentikan</button>
+            <button id="restButton" class="button secondary" type="button">Tandai istirahat</button>
+            <button id="endSessionButton" class="button danger" type="button">Akhiri sesi</button>
+          </div>
+        </article>
+
+        <aside id="metrics" class="metrics-column">
+          <section id="statusCard" class="status-card normal"><span>Status saat ini</span><h2 id="statusLabel">Siap dimulai</h2><p id="statusMessage">Aktifkan kamera untuk memulai kalibrasi.</p></section>
+          <section class="metric-grid">
+            <article class="metric-card featured"><span>Kondisi mata</span><strong id="eyeStateValue">Menunggu kamera</strong><small>Status frame terbaru.</small></article>
+            <article class="metric-card"><span>EAR rata-rata</span><strong id="earValue">0.000</strong><small>Rasio aspek mata.</small></article>
+            <article class="metric-card"><span>Threshold EAR</span><strong id="earThresholdValue">0.000</strong><small>Hasil kalibrasi personal.</small></article>
+            <article class="metric-card"><span>Blink rate</span><strong id="blinkRateValue">Mengumpulkan…</strong><small>Kedipan per menit.</small></article>
+            <article class="metric-card"><span>Total kedipan</span><strong id="blinkTotalValue">0</strong><small>Kedipan tervalidasi.</small></article>
+            <article class="metric-card"><span>PERCLOS</span><strong id="perclosValue">Mengumpulkan…</strong><small>Proporsi waktu mata tertutup.</small></article>
+            <article class="metric-card"><span>Fatigue score</span><strong id="fatigueScoreValue">0.0</strong><small>Skor indikatif 0–100.</small></article>
+            <article class="metric-card"><span>Durasi layar</span><strong id="screenDurationValue">00:00</strong><small>Dimulai setelah kalibrasi.</small></article>
+            <article class="metric-card"><span>Sejak istirahat</span><strong id="restDurationValue">00:00</strong><small>Reset saat istirahat dicatat.</small></article>
+          </section>
+        </aside>
+      </section>
+
+      <section id="logs" class="panel data-panel">
+        <div class="panel-header"><div><span class="eyebrow">Recent metrics</span><h2>Log metrik terbaru</h2><p>Maksimal 10 pembacaan terbaru pada sesi aktif.</p></div></div>
+        <div class="table-scroll"><table><thead><tr><th>Waktu</th><th>EAR</th><th>Blink rate</th><th>PERCLOS</th><th>Skor</th><th>Status</th></tr></thead><tbody id="metricLogBody"><tr><td class="empty-cell" colspan="6">Belum ada data monitoring.</td></tr></tbody></table></div>
+      </section>
+
+      <section id="reports" class="panel report-panel">
+        <div><span class="eyebrow">Session output</span><h2>Laporan penelitian</h2><p>Unduh laporan hasil monitoring sesi dalam format PDF.</p></div>
+        <div class="action-row"><button id="downloadPdfButton" class="button primary" type="button">Unduh PDF</button></div>
+      </section>
+    </main>
+  </div>
+
+  <nav class="mobile-nav" aria-label="Navigasi seluler">
+    <a href="#overview">Ringkasan</a><a href="#camera">Kamera</a><a href="#logs">Log data</a><a href="#reports">Laporan</a>
+  </nav>
+  <script type="module" src="/assets/js/dashboard.js?v=5.4.0"></script>
+</body>
+</html>

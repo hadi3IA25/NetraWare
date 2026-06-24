@@ -1,0 +1,31 @@
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.DS_Store
+.env
+
+# Runtime output
+data/*.db
+data/*.db-*
+data/captures/*
+!data/captures/.gitkeep
+data/exports/*
+!data/exports/.gitkeep
+data/logs/*
+!data/logs/.gitkeep
+data/reports/*
+!data/reports/.gitkeep
+data/test_videos/*
+!data/test_videos/.gitkeep
+
+# Downloaded MediaPipe model
+app/models/*.task
+!app/models/.gitkeep
+*.pyc
+data/logs/
+data/reports/
+*.zip

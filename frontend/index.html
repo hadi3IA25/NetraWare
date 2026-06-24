@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0f766e">
+  <title>NetraWare</title>
+  <script>try{const t=localStorage.getItem('netraware-theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme: dark)').matches))document.documentElement.classList.add('dark')}catch(e){}</script>
+  <link rel="stylesheet" href="/assets/css/styles.css?v=5.3.1">
+</head>
+<body>
+  <header class="public-header">
+    <a class="brand" href="/" aria-label="NetraWare">
+      <span class="brand-symbol">◉</span>
+      <span><strong>NetraWare</strong><small>Jaga Netra</small></span>
+    </a>
+    <nav class="public-nav" aria-label="Navigasi utama">
+      <a class="active" href="/">Beranda</a>
+      <a href="#method">Metode</a>
+      <button class="icon-button" type="button" data-theme-toggle><span data-theme-icon>☾</span></button>
+    </nav>
+  </header>
+
+  <main class="landing-shell">
+    <section class="landing-hero">
+      <div class="hero-copy">
+        <span class="eyebrow">EAR · Blink rate · PERCLOS</span>
+        <h1>Monitoring indikasi kelelahan mata secara real-time.</h1>
+        <p>Sistem berbasis MediaPipe Face Mesh untuk kebutuhan pengujian ilmiah. Kalibrasi personal digunakan agar pembacaan kondisi mata lebih stabil pada setiap responden.</p>
+        <div class="hero-badges">
+          <span>Kalibrasi personal</span><span>Data penelitian</span><span>Laporan PDF</span>
+        </div>
+        <div class="research-note">
+          <strong>Batas penggunaan</strong>
+          <span>Hasil bersifat indikatif dan bukan diagnosis medis.</span>
+        </div>
+      </div>
+
+      <form id="startForm" class="start-panel">
+        <div class="section-heading compact">
+          <span class="step-number">01</span>
+          <div><h2>Mulai sesi</h2><p>Gunakan kode responden, bukan identitas pribadi.</p></div>
+        </div>
+        <label class="field"><span>Kode responden *</span><input id="userCodeInput" maxlength="50" placeholder="Contoh: P001" required></label>
+        <label class="consent"><input id="consentInput" type="checkbox" required><span>Saya menyetujui penggunaan kamera dan data monitoring untuk keperluan penelitian/pengujian sistem. Data digunakan sebagai indikator, bukan diagnosis medis, dan sebaiknya memakai kode responden tanpa identitas pribadi.</span></label>
+        <button id="startButton" class="button primary full" type="submit">Mulai monitoring</button>
+        <p id="startMessage" class="form-message" aria-live="polite"></p>
+      </form>
+    </section>
+
+    <section id="method" class="method-section">
+      <div class="section-heading"><span class="eyebrow">Alur sistem</span><h2>Tiga tahap pengukuran</h2></div>
+      <div class="method-grid">
+        <article><span>01</span><h3>Kalibrasi</h3><p>Baseline EAR dihitung dari sampel mata terbuka yang telah dibersihkan dari outlier.</p></article>
+        <article><span>02</span><h3>Monitoring</h3><p>Kondisi mata, kedipan, PERCLOS, dan durasi penggunaan diproses secara temporal.</p></article>
+        <article><span>03</span><h3>Pelaporan</h3><p>Ringkasan sesi dapat diekspor sebagai laporan PDF untuk dokumentasi penelitian.</p></article>
+      </div>
+    </section>
+  </main>
+  <script type="module" src="/assets/js/index.js?v=5.3.1"></script>
+</body>
+</html>
